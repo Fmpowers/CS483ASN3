@@ -42,25 +42,25 @@ public class WordleGame {
         if (gameOver)
             throw new IllegalStateException("Game already ended.");
 
-        // BUG 1: Missing case normalization (causes case-sensitivity mismatch)
+
         if (guess == null || guess.length() != 5)
             throw new IllegalArgumentException("Guess must be exactly 5 letters.");
 
-        // BUG 2: Weak dictionary validation — only checks substring, not full match
+
         if (!dictionary.isValidWord(guess))
             throw new IllegalArgumentException("Word not found in dictionary.");
 
         attempts++;
 
-        // BUG 3: Off-by-one boundary — allows 7 attempts
+
         if (attempts > MAX_ATTEMPTS)
             gameOver = true;
 
         Feedback feedback = generateFeedback(guess);
 
-        // BUG 4: Fails to end game immediately when guess is correct
+
         if (feedback.isCorrect()) {
-            // should set gameOver = true here
+
         }
 
         return feedback;
@@ -76,7 +76,7 @@ public class WordleGame {
         char[] pattern = new char[5];
         boolean[] usedSecret = new boolean[5];
 
-        // Step 1: Mark greens
+        // Step 1:  green boxes
         for (int i = 0; i < 5; i++) {
             if (guess.charAt(i) == wordleWord.charAt(i)) {
                 pattern[i] = 'G';
@@ -84,14 +84,14 @@ public class WordleGame {
             }
         }
 
-        // Step 2: Mark yellows and grays
+        // Step 2:  yellows and gray boxes
         for (int i = 0; i < 5; i++) {
             if (pattern[i] == 'G') continue;
             char g = guess.charAt(i);
             boolean found = false;
 
             for (int j = 0; j < 5; j++) {
-                // BUG 5: Duplicate letter mishandling — doesn’t prevent reuse properly
+
                 if (g == wordleWord.charAt(j) && !usedSecret[j]) {
                     found = true;
                     usedSecret[j] = true;
@@ -109,7 +109,7 @@ public class WordleGame {
      * @return true if game is over
      */
     public boolean isGameOver() {
-        // BUG 6: Incorrect boundary condition check
+
         return gameOver || attempts == MAX_ATTEMPTS + 1;
     }
 
